@@ -12,33 +12,7 @@ exports.getAllEmployees = async (req, res, next) => {
 
 exports.insertNewEmployee = async (req, res, next) => {
     try {
-        let { 
-            slack_user_id, 
-            lname, 
-            fname, 
-            email, 
-            phone, 
-            years_employed, 
-            annual_leave, 
-            sick_leave, 
-            personal_day, 
-            title, 
-            manager_email 
-        } = await req.body;
-
-        let employee = new Employee(
-            slack_user_id, 
-            lname, 
-            fname, 
-            email, 
-            phone, 
-            years_employed, 
-            annual_leave, 
-            sick_leave, 
-            personal_day, 
-            title, 
-            manager_email
-        );
+        let employee = new Employee(req.body);
         
         employee = await employee.save();
         console.log("Employee: ", employee);
@@ -48,7 +22,7 @@ exports.insertNewEmployee = async (req, res, next) => {
       }
 }
 
-exports.getEmployeeByEmail = async (req, res, next) => {
+exports.getEmployee = async (req, res, next) => {
     try {
         let email = req.params.email;
         const [employee, _] = await Employee.findByEmail(email);
@@ -58,7 +32,7 @@ exports.getEmployeeByEmail = async (req, res, next) => {
     }
 }
 
-exports.updateEmployeeByEmail = async (req, res, next) => {
+exports.updateEmployee = async (req, res, next) => {
     try {
         let email = req.params.email;
         let updateValues = await req.body;
@@ -66,6 +40,18 @@ exports.updateEmployeeByEmail = async (req, res, next) => {
         employee = new Employee(employee);
         employee = await employee.updateByEmail(email, updateValues);
         res.status(200).json({ employee: employee });
+    } catch(error) {
+        next(error);
+    }
+}
+
+exports.deleteEmployee = async (req, res, next) => {
+    try {
+        let email = req.params.email;
+        let employee = Employee.findByEmail(email);
+        employee = new Employee(employee);
+        employee = await employee.delete(email);
+        res.status(200).json({ employee: employee })
     } catch(error) {
         next(error);
     }

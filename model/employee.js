@@ -2,24 +2,22 @@ const db = require("../config/db");
 // Employee Class to handle interactions with the database
 class Employee {
     // this too much - maybe we don't need the slack user id since slack api has lookup by email method
-    constructor(slack_user_id, lname, fname, email, phone, years_employed, annual_leave, sick_leave, personal_day, title, manager_email) {
-        this.slack_user_id = slack_user_id;
-        this.lname = lname;
-        this.fname = fname;
-        this.email = email;
-        this.phone = phone;
-        this.years_employed = years_employed;
-        this.annual_leave = annual_leave;
-        this.sick_leave = sick_leave;
-        this.personal_day = personal_day;
-        this.title = title;
-        this.manager_email = manager_email;
+    constructor(fields = {}) {
+        this.lname = fields.lname;
+        this.fname = fields.fname;
+        this.email = fields.email;
+        this.phone = fields.phone || null;
+        this.years_employed = fields.years_employed || 0;
+        this.annual_leave = fields.annual_leave || 40;
+        this.sick_leave = fields.sick_leave || 40;
+        this.personal_day = fields.personal_day || 1;
+        this.title = fields.title || null;
+        this.manager_email = fields.manager_email || null;
     }
     // handles posts for adding new employees to the database
     async save() {
         let sql = `
             INSERT INTO employees(
-                slack_user_id, 
                 lname, 
                 fname, 
                 email, 
@@ -32,7 +30,6 @@ class Employee {
                 manager_email
             )
             VALUES(
-                '${this.slack_user_id}',
                 '${this.lname}',
                 '${this.fname}',
                 '${this.email}',
@@ -69,8 +66,8 @@ class Employee {
         return updatedEmployee; // return what was done
     }
 
-    async deleteByEmail(email) {
-        let sql =  `DELETE * FROM employees WHERE email = '${email};`;
+    async delete(email) {
+        let sql =  `DELETE FROM employees WHERE email = '${email}';`;
 
         const [deletedEmployee, _] = await db.execute(sql);
 

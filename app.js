@@ -16,7 +16,7 @@ app.get('/', (req, res) => {
 app.use("/public", express.static('public'));
 
 // Redirect requests to endpoint starting with /posts to postRoutes.js
-app.use("/employees", require("./src/routes/employee-routes"));
+app.use("/employees", require("./routes/employee-routes"));
 
 // Global Error Handler. IMPORTANT function params MUST start with err
 app.use((err, req, res, next) => {
@@ -30,5 +30,5 @@ app.use((err, req, res, next) => {
 });
 
 // Listen on pc port
-const PORT = 3000;
+const PORT = 3001;
 app.listen(PORT, () => console.log(`Server running on PORT ${PORT}`));

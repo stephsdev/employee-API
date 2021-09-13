@@ -7,7 +7,7 @@ const router = express.Router();
 router.route("/").get(employeeControllers.getAllEmployees).post(employeeControllers.insertNewEmployee);
 
 // get employee by email
-router.route("/:email").get(employeeControllers.getEmployeeByEmail).patch(employeeControllers.updateEmployeeByEmail);
+router.route("/:email").get(employeeControllers.getEmployee).patch(employeeControllers.updateEmployee).delete(employeeControllers.deleteEmployee);
 
 // @route PATCH update employee property
 // router.route("/:email/:property")
