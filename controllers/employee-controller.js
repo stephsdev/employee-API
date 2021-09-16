@@ -35,8 +35,6 @@ exports.getEmployee = async (req, res, next) => {
 exports.updateEmployee = async (req, res, next) => {
     try {
         let email = req.params.email;
-        let headers =  req.header('content-type');
-        console.log(headers);
         let updateValues = await req.body;
         let employee = Employee.findByEmail(email);
         employee = new Employee(employee);

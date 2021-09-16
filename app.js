@@ -15,7 +15,7 @@ app.get('/', (req, res) => {
 // public files served   
 app.use("/public", express.static('public'));
 
-// Redirect requests to endpoint starting with /employees to employee-routes.js
+// Redirect requests to endpoint starting with /posts to postRoutes.js
 app.use("/employees", require("./routes/employee-routes"));
 
 // Global Error Handler. IMPORTANT function params MUST start with err
