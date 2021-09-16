@@ -59,7 +59,6 @@ class Employee {
         }
 
         let sql = `UPDATE employees SET ${setColumnsArray.join(', ')} WHERE email = '${email}'`;
-        console.log(sql);
 
         const [updatedEmployee, _] = await db.execute(sql); // submit mysql query to db
 
